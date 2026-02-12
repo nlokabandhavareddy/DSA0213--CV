@@ -1,0 +1,48 @@
+import cv2
+
+cap = cv2.VideoCapture(0)
+
+if not cap.isOpened():
+    print("Error: Webcam not accessible")
+    exit()
+
+print("1 - Normal Speed")
+print("2 - Slow Motion")
+print("3 - Fast Motion")
+print("q - Quit")
+
+mode = 1   
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    if mode == 1:
+        cv2.imshow("Webcam Speed Control", frame)
+        cv2.waitKey(30)
+
+    elif mode == 2:
+        for _ in range(5):
+            cv2.imshow("Webcam Speed Control", frame)
+            cv2.waitKey(60)
+
+    elif mode == 3:
+        for _ in range(3):
+            cap.read()
+        cv2.imshow("Webcam Speed Control", frame)
+        cv2.waitKey(5)
+
+    key = cv2.waitKey(1) & 0xFF
+
+    if key == ord('1'):
+        mode = 1
+    elif key == ord('2'):
+        mode = 2
+    elif key == ord('3'):
+        mode = 3
+    elif key == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()

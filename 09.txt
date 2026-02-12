@@ -1,0 +1,44 @@
+import cv2
+import numpy as np
+
+video_path = r"C:\Program Files\OpenCV\vid.mp4"
+
+cap = cv2.VideoCapture(video_path)
+
+if not cap.isOpened():
+    print("Error: Cannot open video file")
+    exit()
+
+src_pts = np.float32([
+    [100, 100],
+    [500, 100],
+    [100, 400],
+    [500, 400]
+])
+
+dst_pts = np.float32([
+    [0, 0],
+    [400, 0],
+    [0, 300],
+    [400, 300]
+])
+
+M = cv2.getPerspectiveTransform(src_pts, dst_pts)
+
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    frame = cv2.resize(frame, (600, 450))
+
+    warped = cv2.warpPerspective(frame, M, (400, 300))
+
+    cv2.imshow("Original Video", frame)
+    cv2.imshow("Perspective Transformed Video", warped)
+
+    if cv2.waitKey(25) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()

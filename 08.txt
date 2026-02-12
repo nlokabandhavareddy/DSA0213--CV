@@ -1,0 +1,30 @@
+import cv2
+import numpy as np
+
+img = cv2.imread("C:\Program Files\OpenCV\img1.png")   
+
+img = cv2.resize(img, (500, 500))
+
+src_pts = np.float32([
+    [50, 50],
+    [450, 50],
+    [50, 450],
+    [450, 450]
+])
+
+dst_pts = np.float32([
+    [0, 0],
+    [400, 0],
+    [0, 400],
+    [400, 400]
+])
+
+M = cv2.getPerspectiveTransform(src_pts, dst_pts)
+
+warped = cv2.warpPerspective(img, M, (400, 400))
+
+cv2.imshow("Original Image", img)
+cv2.imshow("Perspective Transformed Image", warped)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
